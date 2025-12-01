@@ -19,7 +19,7 @@ class BooksPipeline:
         self.client = MongoClient('mongodb+srv://sourabhs_db_user:JJuRo1D9A0PcXZkv@cluster0.dlwow6s.mongodb.net/')
         self.db = self.client["books"]
         # self.collection = self.db["books"]
-
+        self.db["status_update"].insert_one({"status" :"open"})
         # CSV setup
         self.csv_file_path = "books.csv"
         # Check if file exists
@@ -33,6 +33,11 @@ class BooksPipeline:
 
     def close_spider(self, spider):
         # Close connection when spider finishes
+        self.db["status_update"].update_one(
+            {"status": "open"},
+            {"$set": {"status": "close"}}
+        )
+
         self.client.close()
 
         self.csv_file.close()

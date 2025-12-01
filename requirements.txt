@@ -1,0 +1,4 @@
+Scrapy==2.13.4
+pymongo==4.15.4
+fastapi
+uvicorn
